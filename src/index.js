@@ -17,4 +17,17 @@ readerConfig.newItemCallback = function (_, metadata, item) {
 
 reader.init(config);
 
-//TODO: close database connection on termination signals
+function gracefulShutdown() {
+    eventEmitter.removeAllListeners('newItem');
+    closeDb();
+}
+
+process
+    .on('beforeExit', gracefulShutdown)
+    .on('SIGTERM', gracefulShutdown)
+    .on('SIGKILL', gracefulShutdown)
+    .on('SIGINT', gracefulShutdown)
+
+module.exports = {
+    eventEmitter
+}
