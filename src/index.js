@@ -1,33 +1,20 @@
-const reader = require('davereader');
 const config = require('config');
-const EventEmitter = require('events');
 
-const readerConfig = require('../config.json');
-const { initDb, closeDb } = require('./repository')
+const { initDb, closeDb } = require('./repository/database');
+const { initReader } = require('./rssReader');
+const { eventEmitter } = require('./events');
 
 initDb(config.get('dbPath'));
-
-const eventEmitter = new EventEmitter();
-readerConfig.newItemCallback = function (_, metadata, item) {
-    eventEmitter.emit('newItem', JSON.stringify({
-        item,
-        metadata
-    }));
-}
-
-reader.init(config);
+initReader();
 
 function gracefulShutdown() {
     eventEmitter.removeAllListeners('newItem');
     closeDb();
+    console.log('removed listeners and closed DB');
 }
 
 process
+    .on('uncaughtException', error => {
+        console.error(error);
+    })
     .on('beforeExit', gracefulShutdown)
-    .on('SIGTERM', gracefulShutdown)
-    .on('SIGKILL', gracefulShutdown)
-    .on('SIGINT', gracefulShutdown)
-
-module.exports = {
-    eventEmitter
-}

@@ -19,12 +19,13 @@ function initTable() {
                 link text,
                 description text,
                 permalink text,
-                enclosure text,
+                enclosure blob,
                 pubdate text,
                 comments text,
                 feedUrl text,
                 date text,
-                aggregator text
+                aggregator text,
+                metadata blob
             ) 
             
         `.trim());
@@ -45,7 +46,7 @@ function getDb() {
     if (db) {
         return db;
     } else {
-        return new Error('DB not initialized');
+        throw new Error('DB not initialized');
     }
 }
 
