@@ -3,7 +3,7 @@ const config = require('config');
 const EventEmitter = require('events');
 
 const readerConfig = require('../config.json');
-const { initDb, closeDb, getDb } = require('./repository')
+const { initDb, closeDb } = require('./repository')
 
 initDb(config.get('dbPath'));
 
@@ -15,5 +15,6 @@ readerConfig.newItemCallback = function (_, metadata, item) {
     }));
 }
 
-closeDb()
-// reader.init(config);
+reader.init(config);
+
+//TODO: close database connection on termination signals
