@@ -1,0 +1,9 @@
+{
+    "maxRiverItems": 1,
+    "flHttpEnabled": false,
+    "flWebSocketEnabled": false,
+    "flRequestCloudNotify": false,
+    "flDownloadPodcasts": false,
+    "flSaveFeedRivers": false,
+    "flWriteItemsToFiles": false
+}
