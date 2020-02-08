@@ -1,4 +1,4 @@
-const { domain, baseUrl } = require('../utils/transform');
+const { urlInfo } = require('../utils/transform');
 
 const feedsMap = new Set();
 
@@ -12,13 +12,14 @@ async function resolveAction(itemFeed) {
         return { action: 'PASS' }
     } else {
         feedsMap.add(feedUrl);
-        
+
+        const { protocol, resource } = urlInfo(guid);
         const data = {
             id: feedUrl,
             title,
             categories,
-            faviconUrl: `https://www.google.com/s2/favicons?domain=${await domain(guid)}`,
-            linkToWebPage: await baseUrl(guid),
+            faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
+            linkToWebPage: `${protocol}://${resource}`,
         }
 
         return {

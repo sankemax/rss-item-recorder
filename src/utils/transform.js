@@ -16,18 +16,13 @@ function doNothing() {
     return;
 }
 
-function domain(url) {
-    return parseUrl(url).resource;
-}
-
-function baseUrl(url) {
+function urlInfo(url) {
     const { protocol, resource } = parseUrl(url);
-    return `${protocol}://${resource}`;
+    return { protocol, resource };
 }
 
 module.exports = {
-    baseUrl,
-    domain,
+    urlInfo,
     doNothing,
     thennable,
     dissociateAll,
