@@ -7,28 +7,36 @@ function initDb(dbPath = ':memory:', isVerbose = false) {
     if (isVerbose) {
         db.verbose();
     }
-    initTable();
+    initTables();
 }
 
-function initTable() {
+function initTables() {
     db.serialize(() => {
-        db.run(`
-            CREATE TABLE IF NOT EXISTS items (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title text,
-                link text,
-                description text,
-                permalink text,
-                enclosure blob,
-                pubdate text,
-                comments text,
-                feedUrl text,
-                date text,
-                aggregator text,
-                metadata blob
-            ) 
-            
-        `.trim());
+        db
+            .run(`
+                CREATE TABLE IF NOT EXISTS items (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title text,
+                    link text,
+                    description text,
+                    permalink text,
+                    enclosure blob,
+                    pubdate text,
+                    comments text,
+                    feedUrl text,
+                    date text,
+                    aggregator text
+                )
+            `.trim())
+            .run(`
+                CREATE TABLE IF NOT EXISTS feeds (
+                    id text PRIMARY KEY,
+                    title text,
+                    faviconUrl text,
+                    linkToWebPage text,
+                    categories text
+                )
+            `.trim())
     });
 }
 

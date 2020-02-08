@@ -1,18 +1,34 @@
 const R = require('ramda');
 const EventEmitter = require('events');
 
-const { addItem } = require('./repository/actions');
-const { processFeedEvent } = require('./utils/feedUtil');
+const { addDataToDb } = require('./repository/actions');
+const { processItemEvent } = require('./processEvent/item');
+const { resolveAction, intermediateProcessing } = require('./processEvent/feed');
+const { thennable, doNothing } = require('./utils/transform');
 
 const eventEmitter = new EventEmitter();
 eventEmitter.addListener(
     'newItem',
     async item => await R.pipe(
-        JSON.parse,
-        processFeedEvent,
-        addItem
+        processItemEvent,
+        addDataToDb('items')
     )(item)
 );
+
+eventEmitter.addListener(
+    'newItem',
+    async item => await R.pipeWith(thennable())([
+        resolveAction,
+        intermediateProcessing,
+        doAction
+    ])(item)
+)
+
+function doAction({ data, action }) {
+    return action == 'INSERT'
+        ? addDataToDb('feeds', { isOnlyIfNotExists: true })(data)
+        : doNothing;
+}
 
 module.exports = {
     eventEmitter,

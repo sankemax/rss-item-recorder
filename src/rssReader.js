@@ -4,10 +4,10 @@ const { eventEmitter } = require('./events')
 
 function initReader() {
     readerConfig.newItemCallback = function (_, metadata, item) {
-        eventEmitter.emit('newItem', JSON.stringify({
+        eventEmitter.emit('newItem', {
             item,
             metadata
-        }));
+        });
     }
     reader.init(readerConfig);
 }

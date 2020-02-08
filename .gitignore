@@ -4,4 +4,4 @@ data
 callbacks
 rivers
 
-items.db
+*.db
