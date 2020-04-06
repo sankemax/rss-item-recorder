@@ -5,7 +5,7 @@ const feedsMap = new Set();
 async function resolveAction(itemFeed) {
     const {
         item: { feedUrl },
-        metadata: { guid, categories, meta: { title } }
+        metadata: { link, categories, meta: { title } }
     } = itemFeed;
 
     if (feedsMap.has(feedUrl)) {
@@ -13,7 +13,7 @@ async function resolveAction(itemFeed) {
     } else {
         feedsMap.add(feedUrl);
 
-        const { protocol, resource } = urlInfo(guid);
+        const { protocol, resource } = urlInfo(link);
         const data = {
             id: feedUrl,
             title,
