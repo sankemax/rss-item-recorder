@@ -17,7 +17,7 @@ eventEmitter.addListener(
 
 eventEmitter.addListener(
     'newItem',
-    async item => await R.pipeWith(thennable())([
+    async item => await R.pipeWith(thennable)([
         resolveAction,
         intermediateProcessing,
         doAction

@@ -1,29 +1,29 @@
 const R = require('ramda');
 const parseUrl = require('parse-url');
 
-function dissociateAll(args) {
-    return obj => args.reduce(
-        (finalObj, arg) => R.dissoc(arg, finalObj),
-        obj
-    )
-}
+const dissociateAll = (args, obj) => args.reduce(
+    (finalObj, arg) => R.dissoc(arg, finalObj),
+    obj
+);
 
-function thennable() {
-    return (fn, obj) => obj.then ? obj.then(fn) : fn(obj)
-}
+const thennable = (fn, obj) => obj.then ? obj.then(fn) : fn(obj);
 
-function doNothing() {
-    return;
-}
+const doNothing = () => void 0;
 
-function urlInfo(url) {
+const urlInfo = url => {
     const { protocol, resource } = parseUrl(url);
     return { protocol, resource };
-}
+};
+
+const replaceExpression = expression => withStr => str => str.replace(expression, withStr);
+
+const replaceLineBreaksWith = replaceExpression(/\r?\n|\r|&nbsp;/g);
 
 module.exports = {
-    urlInfo,
-    doNothing,
-    thennable,
     dissociateAll,
+    thennable,
+    doNothing,
+    urlInfo,
+    replaceExpression,
+    replaceLineBreaksWith,
 }
