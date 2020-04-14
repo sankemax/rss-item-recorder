@@ -1,7 +1,8 @@
 const R = require('ramda');
 const EventEmitter = require('events');
 
-const { addDataToDb } = require('./repository/actions');
+const { addDataToDb } = require('./repository/insert');
+const { updateParam } = require('./repository/update');
 const { processItemEvent } = require('./processEvent/item');
 const { resolveAction, intermediateProcessing } = require('./processEvent/feed');
 const { thennable, doNothing } = require('./utils/transform');
@@ -17,17 +18,32 @@ eventEmitter.addListener(
 
 eventEmitter.addListener(
     'newItem',
-    async item => await R.pipeWith(thennable())([
+    async item => await R.pipeWith(thennable)([
         resolveAction,
         intermediateProcessing,
         doAction
     ])(item)
 )
 
-function doAction({ data, action }) {
-    return action == 'INSERT'
-        ? addDataToDb('feeds', { isOnlyIfNotExists: true })(data)
-        : doNothing;
+function doAction({ data, action, releaseLock, }) {
+    switch (action) {
+        case 'INSERT':
+            addDataToDb('feeds', { isOnlyIfNotExists: true })(data);
+            break;
+        case 'UPDATE':
+            updateParam(
+                'feeds',
+                {
+                    set: { setParam: 'lastPostDate', setValue: data.lastPostDate },
+                    where: { whereParam: 'id', whereValue: data.id }
+                }
+            );
+            break;
+        default:
+            doNothing;
+            break;
+    }
+    releaseLock();
 }
 
 module.exports = {

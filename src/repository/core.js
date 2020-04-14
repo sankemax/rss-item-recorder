@@ -19,13 +19,10 @@ function initTables() {
                     title text,
                     link text,
                     description text,
-                    permalink text,
-                    enclosure blob,
                     pubdate text,
                     comments text,
                     feedUrl text,
-                    date text,
-                    aggregator text
+                    date text
                 )
             `.trim())
             .run(`
@@ -34,6 +31,7 @@ function initTables() {
                     title text,
                     faviconUrl text,
                     linkToWebPage text,
+                    lastPostDate text,
                     categories text
                 )
             `.trim())
