@@ -25,21 +25,25 @@ eventEmitter.addListener(
     ])(item)
 )
 
-function doAction({ data, action }) {
+function doAction({ data, action, releaseLock, }) {
     switch (action) {
         case 'INSERT':
-            return addDataToDb('feeds', { isOnlyIfNotExists: true })(data);
+            addDataToDb('feeds', { isOnlyIfNotExists: true })(data);
+            break;
         case 'UPDATE':
-            return updateParam(
+            updateParam(
                 'feeds',
                 {
                     set: { setParam: 'lastPostDate', setValue: data.lastPostDate },
                     where: { whereParam: 'id', whereValue: data.id }
                 }
-            )
+            );
+            break;
         default:
-            return doNothing;
+            doNothing;
+            break;
     }
+    releaseLock();
 }
 
 module.exports = {

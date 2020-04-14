@@ -1,18 +1,22 @@
 const { urlInfo } = require('../utils/transform');
 const { getOne } = require('../repository/select');
+const { lock } = require('../utils/lock');
 
 const feedLastPostDate = new Map();
 
 async function resolveAction(item) {
     const itemFeed = generateFeed(item);
+    await lock.acquire(itemFeed.id);
+    const releaseLock = () => lock.release(itemFeed.id);
+
     const { resolved: cacheResolved, lastPostDate, action: cacheAction } = isResolvedByCache(itemFeed, feedLastPostDate);
 
     if (cacheResolved) {
         feedLastPostDate.set(itemFeed.id, lastPostDate);
-
         return {
             action: cacheAction,
             data: itemFeed,
+            releaseLock,
         }
     }
 
@@ -22,6 +26,7 @@ async function resolveAction(item) {
     return {
         action,
         data,
+        releaseLock,
     }
 }
 
