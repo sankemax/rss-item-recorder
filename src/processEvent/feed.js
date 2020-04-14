@@ -1,32 +1,59 @@
 const { urlInfo } = require('../utils/transform');
+const { getOne } = require('../repository/select');
 
 const feedLastPostDate = new Map();
 
 async function resolveAction(item) {
     const itemFeed = generateFeed(item);
-    const resolvedByCache = isResolvedByCache(itemFeed, feedLastPostDate);
+    const { resolved: cacheResolved, lastPostDate, action: cacheAction } = isResolvedByCache(itemFeed, feedLastPostDate);
 
-    if (resolvedByCache.resolved) {
-        const { lastPostDate, action, } = resolvedByCache;
+    if (cacheResolved) {
         feedLastPostDate.set(itemFeed.id, lastPostDate);
-        
+
         return {
-            action,
+            action: cacheAction,
             data: itemFeed,
         }
     }
 
-    const { action, feed, lastPostDate, } = resolveWithDb(itemFeed);
-    feedLastPostDate.set(feed.id, feed.lastPostDate);
+    const { action, data, lastPostDate: resolvedLastPostDate, } = await resolveWithDb(itemFeed);
+    feedLastPostDate.set(itemFeed.id, resolvedLastPostDate);
 
     return {
         action,
-        data: feed,
+        data,
     }
 }
 
-function resolveWithDb(itemFeed) {
+async function resolveWithDb(itemFeed) {
+    const { id, lastPostDate, } = itemFeed;
+    const feedDb = await getOne(
+        'feeds',
+        {
+            columns: 'lastPostDate',
+            where: { param: 'id', value: id }
+        }
+    )
 
+    switch (true) {
+        case feedDb == null:
+            return {
+                action: 'INSERT',
+                data: itemFeed,
+                lastPostDate,
+            }
+        case new Date(feedDb.lastPostDate) < new Date(lastPostDate):
+            return {
+                action: 'UPDATE',
+                data: itemFeed,
+                lastPostDate,
+            }
+        default:
+            return {
+                action: 'NO_ACTION',
+                lastPostDate: feedDb.lastPostDate,
+            }
+    }
 }
 
 function generateFeed(itemFeed) {

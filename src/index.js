@@ -1,6 +1,6 @@
 const config = require('config');
 
-const { initDb, closeDb } = require('./repository/database');
+const { initDb, closeDb } = require('./repository/core');
 const { initReader } = require('./rssReader');
 const { eventEmitter } = require('./events');
 

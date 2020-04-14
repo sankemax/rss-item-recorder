@@ -4,7 +4,7 @@ const {
     where,
 } = require('../utils/database');
 
-exports.default = async function getOne(tableName, selectOptions) {
+function getOne(tableName, selectOptions) {
     const { columns, where: { param, value } } = selectOptions;
     return new Promise((resolve, reject) => {
         getDb()
@@ -21,4 +21,8 @@ exports.default = async function getOne(tableName, selectOptions) {
                 }
             )
     })
+}
+
+module.exports = {
+    getOne,
 }

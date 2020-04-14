@@ -22,7 +22,7 @@ function initTables() {
                     pubdate text,
                     comments text,
                     feedUrl text,
-                    date text,
+                    date text
                 )
             `.trim())
             .run(`
@@ -31,6 +31,7 @@ function initTables() {
                     title text,
                     faviconUrl text,
                     linkToWebPage text,
+                    lastPostDate text,
                     categories text
                 )
             `.trim())

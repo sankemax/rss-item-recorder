@@ -9,7 +9,7 @@ const {
 
 const queue = new Queue(2, 5500);
 
-exports.default = function updateParam(tableName, updateOptions) {
+function updateParam(tableName, updateOptions) {
     const {
         set: { setParam, setValue },
         where: { whereParam, whereValue },
@@ -21,4 +21,8 @@ exports.default = function updateParam(tableName, updateOptions) {
             onError(tableName, [['clause', 'update'], ['params', JSON.stringify(updateOptions)]])
         )
     });
+}
+
+module.exports = {
+    updateParam,
 }
