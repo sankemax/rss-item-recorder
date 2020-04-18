@@ -1,5 +1,5 @@
 const { urlInfo } = require('../utils/transform');
-const { getOne } = require('../repository/select');
+const { get } = require('../repository/select');
 const { lock } = require('../utils/lock');
 
 const feedLastPostDate = new Map();
@@ -32,7 +32,7 @@ async function resolveAction(item) {
 
 async function resolveWithDb(itemFeed) {
     const { id, lastPostDate, } = itemFeed;
-    const feedDb = await getOne(
+    const feedDb = await get(
         'feeds',
         {
             columns: 'lastPostDate',

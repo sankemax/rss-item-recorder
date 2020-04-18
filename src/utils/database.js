@@ -13,8 +13,12 @@ function getShouldIgnoreConflict(shouldIgnore) {
         : '';
 }
 
+function limitAndOffset(limit, offset) {
+    return (limit ? ` LIMIT ?` : '') + (offset ? ` OFFSET ?` : '')
+}
+
 function where(param, value) {
-    return paramEqualsValue('WHERE')(param, value);
+    return paramEqualsValue(' WHERE')(param, value);
 }
 
 function set(param, value) {
@@ -64,4 +68,5 @@ module.exports = {
     where,
     getShouldIgnoreConflict,
     treatSpecialValues,
+    limitAndOffset,
 }

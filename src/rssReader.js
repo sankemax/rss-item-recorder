@@ -1,6 +1,6 @@
 const reader = require('davereader');
 const readerConfig = require('../readerConfig.json');
-const { eventEmitter } = require('./events')
+const { eventEmitter } = require('./events');
 
 function initReader() {
     readerConfig.newItemCallback = function (_, metadata, item) {

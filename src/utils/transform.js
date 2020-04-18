@@ -10,6 +10,8 @@ const thennable = (fn, obj) => obj.then ? obj.then(fn) : fn(obj);
 
 const doNothing = () => void 0;
 
+const notNull = any => any != null;
+
 const urlInfo = url => {
     const { protocol, resource } = parseUrl(url);
     return { protocol, resource };
@@ -23,6 +25,7 @@ module.exports = {
     dissociateAll,
     thennable,
     doNothing,
+    notNull,
     urlInfo,
     replaceExpression,
     replaceLineBreaksWith,

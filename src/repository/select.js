@@ -1,28 +1,29 @@
+const { notNull } = require('../utils/transform');
 const { getDb } = require('./core');
 const {
     onError,
     where,
+    limitAndOffset,
 } = require('../utils/database');
 
-function getOne(tableName, selectOptions) {
-    const { columns, where: { param, value } } = selectOptions;
+function get(tableName, selectOptions, single = true) {
+    const { columns, where: { param, value }, limit, offset, } = selectOptions;
     return new Promise((resolve, reject) => {
-        getDb()
-            .get(
-                `select ${columns || '*'} from ${tableName} ${where(param, value)}`.trim(),
-                [value],
-                (error, value) => {
-                    if (error) {
-                        onError(tableName, [['clause', 'where'], ['param', param], ['value', value]]);
-                        return reject(error);
-                    }
-
-                    resolve(value);
+        const dbMethod = single ? 'get' : 'all';
+        getDb()[dbMethod](
+            `select ${columns || '*'} from ${tableName}${where(param, value)}${limitAndOffset(limit, offset)}`.trim(),
+            [value, limit, offset].filter(notNull),
+            (error, value) => {
+                if (error) {
+                    onError(tableName, [['clause', 'where'], ['param', param], ['value', value]]);
+                    return reject(error);
                 }
-            )
+                resolve(value);
+            }
+        )
     })
 }
 
 module.exports = {
-    getOne,
+    get,
 }
