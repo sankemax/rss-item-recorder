@@ -1,3 +1,4 @@
 {
-    "dbPath": "/home/ubuntu/blogs.db"
+    "dbPath": "/home/ubuntu/blogs.db",
+    "portForApi": 3030
 }

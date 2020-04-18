@@ -22,6 +22,16 @@ function get(tableName, selectOptions, single = true) {
             }
         )
     })
+        .then(
+            data => tableName == 'feeds'
+                ? [data]
+                    .flat()
+                    .map(feed => ({
+                        ...feed,
+                        categories: feed.categories.split(',$,$,'),
+                    }))
+                : data
+        )
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const R = require('ramda');
 
 function treatSpecialValues(value) {
@@ -41,7 +42,7 @@ function getValues(entries) {
     return entries.map(([_, value]) => value);
 }
 
-function generateQuestionMarks(insertion, value) {
+function generateQuestionMarks(insertion/*, value*/) {
     return Array
         .from({ length: insertion.length /* + (value ? 1 : 0)*/ }, () => '?')
         .join(',');
