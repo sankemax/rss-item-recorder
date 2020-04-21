@@ -28,7 +28,7 @@ function get(tableName, selectOptions, single = true) {
                     .flat()
                     .map(feed => ({
                         ...feed,
-                        categories: feed.categories.split(',$,$,'),
+                        categories: feed.categories && feed.categories.split(',$,$,'),
                     }))
                 : data
         )
