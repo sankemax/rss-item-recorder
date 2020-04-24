@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const config = require('config');
+const cors = require('cors');
 
 const { initDb } = require('./repository/core');
 const { initReader } = require('./rssReader');
@@ -13,6 +14,7 @@ initDb(config.get('dbPath'));
 initReader();
 
 express()
+    .use(cors())
     .get('/', (req, res) => res.send('Rss Item Recorder is alive!'))
     .use('/api', readerRouter)
     .use((err, req, res, next) => {

@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.2.5",
+    "cors": "^2.8.5",
     "davereader": "^0.6.10",
     "express": "^4.17.1",
     "parse-url": "^5.0.1",

@@ -48,6 +48,6 @@ function extractOptions(req) {
     const { limit, offset, } = req.query;
     return {
         limit,
-        offset,
+        offset: offset || "0",
     }
 }
