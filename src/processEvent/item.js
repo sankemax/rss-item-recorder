@@ -1,14 +1,16 @@
 const moment = require('moment');
 const R = require('ramda');
-const { dissociateAll, replaceLineBreaksWith, } = require('../utils/transform');
+const { dissociateAll, urlInfo, replaceLineBreaksWith, } = require('../utils/transform');
 
 function processItemEvent(itemFeed) {
-    const { item, } = itemFeed;
-    const { description, pubdate, when, } = item;
+    const { item, metadata: { link, author } } = itemFeed;
+    const { description, pubdate, } = item;
+    const { resource } = urlInfo(link);
     const processedItem = {
-        date: moment(when).format('YYYY-MM-DD hh:mm:ssZ'),
-        pubdate: moment(pubdate).format('YYYY-MM-DD hh:mm:ssZ'),
+        author,
+        pubdate: moment(pubdate).format('YYYY-MM-DD HH:mm:ssZ'),
         description: processDescription(description),
+        faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
         ...removeUnnecessaryFields(item),
     }
     return processedItem;
@@ -18,6 +20,7 @@ function removeUnnecessaryFields(item) {
     return dissociateAll(
         [
             'when',
+            'date',
             'pubdate',
             'id',
             'description',

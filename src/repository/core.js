@@ -18,17 +18,19 @@ function initTables() {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title text,
                     link text,
+                    author text,
                     description text,
+                    faviconUrl text,
                     pubdate text,
                     comments text,
-                    feedUrl text,
-                    date text
+                    feedUrl text
                 )
             `.trim())
             .run(`
                 CREATE TABLE IF NOT EXISTS feeds (
                     id text PRIMARY KEY,
                     title text,
+                    author text,
                     faviconUrl text,
                     linkToWebPage text,
                     lastPostDate text,

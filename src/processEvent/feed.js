@@ -65,17 +65,18 @@ async function resolveWithDb(itemFeed) {
 function generateFeed(itemFeed) {
     const {
         item: { feedUrl },
-        metadata: { link, categories, meta: { title }, pubdate }
+        metadata: { link, author, categories, meta: { title }, pubdate }
     } = itemFeed;
 
     const { protocol, resource } = urlInfo(link);
     return {
         id: feedUrl,
         title,
+        author,
         categories,
         faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
         linkToWebPage: `${protocol}://${resource}`,
-        lastPostDate: moment(pubdate).format('YYYY-MM-DD hh:mm:ssZ'),
+        lastPostDate: moment(pubdate).format('YYYY-MM-DD HH:mm:ssZ'),
     }
 }
 
@@ -90,8 +91,8 @@ function isResolvedByCache(feedEvent, feedCache) {
             return {
                 resolved: true,
                 lastPostDate: action == 'UPDATE'
-                    ? moment(feedEventPostDate).format('YYYY-MM-DD hh:mm:ssZ')
-                    : moment(cachedPostDate).format('YYYY-MM-DD hh:mm:ssZ'),
+                    ? moment(feedEventPostDate).format('YYYY-MM-DD HH:mm:ssZ')
+                    : moment(cachedPostDate).format('YYYY-MM-DD HH:mm:ssZ'),
                 action,
             }
         }
