@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { urlInfo } = require('../utils/transform');
 const { get } = require('../repository/select');
 const { lock } = require('../utils/lock');
@@ -47,7 +48,7 @@ async function resolveWithDb(itemFeed) {
                 data: itemFeed,
                 lastPostDate,
             }
-        case new Date(feedDb.lastPostDate) < new Date(lastPostDate):
+        case moment(feedDb.lastPostDate) < moment(lastPostDate):
             return {
                 action: 'UPDATE',
                 data: itemFeed,
@@ -74,7 +75,7 @@ function generateFeed(itemFeed) {
         categories,
         faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
         linkToWebPage: `${protocol}://${resource}`,
-        lastPostDate: new Date(pubdate).toString(),
+        lastPostDate: moment(pubdate).format('YYYY-MM-DD hh:mm:ssZ'),
     }
 }
 
@@ -83,12 +84,14 @@ function isResolvedByCache(feedEvent, feedCache) {
         case feedCache.has(feedEvent.id): {
             const feedEventPostDate = feedEvent.lastPostDate;
             const cachedPostDate = feedCache.get(feedEvent.id);
-            const action = new Date(feedEventPostDate) > new Date(cachedPostDate)
+            const action = moment(feedEventPostDate) > moment(cachedPostDate)
                 ? 'UPDATE'
                 : 'NO_ACTION'
             return {
                 resolved: true,
-                lastPostDate: action == 'UPDATE' ? feedEventPostDate : cachedPostDate,
+                lastPostDate: action == 'UPDATE'
+                    ? moment(feedEventPostDate).format('YYYY-MM-DD hh:mm:ssZ')
+                    : moment(cachedPostDate).format('YYYY-MM-DD hh:mm:ssZ'),
                 action,
             }
         }

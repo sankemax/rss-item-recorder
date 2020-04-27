@@ -4,14 +4,15 @@ const {
     onError,
     where,
     limitAndOffset,
+    orderBy,
 } = require('../utils/database');
 
 function get(tableName, selectOptions, single = true) {
-    const { columns, where: { param, value }, limit, offset, } = selectOptions;
+    const { columns, where: { param, value }, limit, offset, sortBy, } = selectOptions;
     return new Promise((resolve, reject) => {
         const dbMethod = single ? 'get' : 'all';
         getDb()[dbMethod](
-            `select ${columns || '*'} from ${tableName}${where(param, value)}${limitAndOffset(limit, offset)}`.trim(),
+            `select ${columns || '*'} from ${tableName}${where(param, value)}${orderBy(sortBy)}${limitAndOffset(limit, offset)}`.trim(),
             [value, limit, offset].filter(notNull),
             (error, value) => {
                 if (error) {
@@ -24,11 +25,12 @@ function get(tableName, selectOptions, single = true) {
     })
         .then(
             data => tableName == 'feeds'
+                && data != null
                 ? [data]
                     .flat()
                     .map(feed => ({
                         ...feed,
-                        categories: feed.categories && feed.categories.split(',$,$,'),
+                        categories: feed && feed.categories && feed.categories.split(',$,$,'),
                     }))
                 : data
         )

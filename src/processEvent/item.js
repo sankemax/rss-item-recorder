@@ -1,3 +1,4 @@
+const moment = require('moment');
 const R = require('ramda');
 const { dissociateAll, replaceLineBreaksWith, } = require('../utils/transform');
 
@@ -5,8 +6,8 @@ function processItemEvent(itemFeed) {
     const { item, } = itemFeed;
     const { description, pubdate, when, } = item;
     const processedItem = {
-        date: new Date(when).toString(),
-        pubdate: new Date(pubdate).toString(),
+        date: moment(when).format('YYYY-MM-DD hh:mm:ssZ'),
+        pubdate: moment(pubdate).format('YYYY-MM-DD hh:mm:ssZ'),
         description: processDescription(description),
         ...removeUnnecessaryFields(item),
     }

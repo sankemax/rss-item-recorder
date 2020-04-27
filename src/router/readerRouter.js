@@ -11,13 +11,13 @@ async function readHandler(table, options) {
     if (!options.limit) {
         throw new Error('Must limit results. Add `limit` request param to your query.');
     }
-    return await get(table, { ...options, where: {} }, false);
+    return await get(table, { ...options, where: {}, }, false);
 }
 
 // eslint-disable-next-line no-unused-vars
 async function readItemsHandler(req, res, next) {
     try {
-        const items = await readHandler('items', extractOptions(req));
+        const items = await readHandler('items', { ...extractOptions(req), sortBy: 'pubdate' });
         return res.json({
             success: true,
             data: {
@@ -32,7 +32,7 @@ async function readItemsHandler(req, res, next) {
 // eslint-disable-next-line no-unused-vars
 async function readFeedsHandler(req, res, next) {
     try {
-        const feeds = await readHandler('feeds', extractOptions(req));
+        const feeds = await readHandler('feeds', { ...extractOptions(req), sortBy: 'lastPostDate' });
         return res.json({
             success: true,
             data: {

@@ -18,6 +18,12 @@ function limitAndOffset(limit, offset) {
     return (limit ? ` LIMIT ?` : '') + (offset ? ` OFFSET ?` : '')
 }
 
+function orderBy(param) {
+    return param
+        ? ` ORDER BY ${param} DESC`
+        : '';
+}
+
 function where(param, value) {
     return paramEqualsValue(' WHERE')(param, value);
 }
@@ -62,6 +68,7 @@ function onError(tableName, insertion) {
 }
 
 module.exports = {
+    orderBy,
     onError,
     generateQuestionMarks,
     getKeys,
