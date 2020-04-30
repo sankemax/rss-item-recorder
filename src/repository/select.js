@@ -24,13 +24,13 @@ function get(tableName, selectOptions, single = true) {
         )
     })
         .then(
-            data => tableName == 'feeds'
+            data => tableName == 'items'
                 && data != null
                 ? [data]
                     .flat()
-                    .map(feed => ({
-                        ...feed,
-                        categories: feed && feed.categories && feed.categories.split(',$,$,'),
+                    .map(item => ({
+                        ...item,
+                        categories: item && item.categories && item.categories.split(',$,$,') || [],
                     }))
                 : data
         )

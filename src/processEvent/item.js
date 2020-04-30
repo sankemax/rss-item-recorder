@@ -3,14 +3,16 @@ const R = require('ramda');
 const { dissociateAll, urlInfo, replaceLineBreaksWith, } = require('../utils/transform');
 
 function processItemEvent(itemFeed) {
-    const { item, metadata: { link, author } } = itemFeed;
+    const { item, metadata: { link, author, categories, meta } } = itemFeed;
     const { description, pubdate, } = item;
     const { resource } = urlInfo(link);
     const processedItem = {
         author,
+        blogTitle: meta && meta.title || author,
         pubdate: moment(pubdate).format('YYYY-MM-DD HH:mm:ssZ'),
         description: processDescription(description),
-        faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
+        categories,
+        domain: resource,
         ...removeUnnecessaryFields(item),
     }
     return processedItem;

@@ -17,12 +17,14 @@ function initTables() {
                 CREATE TABLE IF NOT EXISTS items (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title text,
+                    blogTitle text,
                     link text,
                     author text,
                     description text,
-                    faviconUrl text,
+                    domain text,
                     pubdate text,
                     comments text,
+                    categories text,
                     feedUrl text
                 )
             `.trim())
@@ -30,11 +32,10 @@ function initTables() {
                 CREATE TABLE IF NOT EXISTS feeds (
                     id text PRIMARY KEY,
                     title text,
+                    blogTitle text,
                     author text,
-                    faviconUrl text,
                     linkToWebPage text,
-                    lastPostDate text,
-                    categories text
+                    lastPostDate text
                 )
             `.trim())
     });

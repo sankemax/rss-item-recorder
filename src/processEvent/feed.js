@@ -65,16 +65,14 @@ async function resolveWithDb(itemFeed) {
 function generateFeed(itemFeed) {
     const {
         item: { feedUrl },
-        metadata: { link, author, categories, meta: { title }, pubdate }
+        metadata: { link, author, meta: { title: blogTitle }, pubdate }
     } = itemFeed;
 
     const { protocol, resource } = urlInfo(link);
     return {
         id: feedUrl,
-        title,
+        blogTitle,
         author,
-        categories,
-        faviconUrl: `https://www.google.com/s2/favicons?domain=${resource}`,
         linkToWebPage: `${protocol}://${resource}`,
         lastPostDate: moment(pubdate).format('YYYY-MM-DD HH:mm:ssZ'),
     }
