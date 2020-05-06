@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 
 const { get } = require('../repository/select');
 
@@ -6,6 +7,25 @@ module.exports = express
     .Router()
     .get('/items', readItemsHandler)
     .get('/feeds', readFeedsHandler)
+    .get('/list', getListHandler)
+
+async function getListHandler(_, res, next) {
+    fs.readFile('lists/people.txt', (err, data) => {
+        if (err) {
+            return next(err);
+        }
+
+        const list = data
+            .toString('utf-8')
+            .split(/\s+/ig)
+            .filter(feed => feed.length);
+
+        res.json({
+            success: true,
+            list,
+        })
+    });
+}
 
 async function readHandler(table, options) {
     if (!options.limit) {
