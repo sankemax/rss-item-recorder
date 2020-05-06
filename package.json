@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "eslint": "npx eslint src/**/*.js",
-    "start": "npm run start:dev",
+    "start": "npm run start:prod",
     "start:dev": "npm run eslint && cross-env NODE_ENV=dev node --inspect src/index.js",
     "start:prod": "npm run eslint && npm run build && cross-env NODE_ENV=prod node dist/index.js",
     "build": "babel src -d dist",
