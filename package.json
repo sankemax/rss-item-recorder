@@ -2,12 +2,13 @@
   "name": "rss-item-recorder",
   "version": "1.0.0",
   "description": "record rss items from davereader to sqlite-db using event emitter",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "eslint": "npx eslint src/**/*.js",
-    "start": "npm run start:prod",
+    "start": "npm run start:heroku",
     "start:dev": "npm run eslint && cross-env NODE_ENV=dev node --inspect src/index.js",
     "start:prod": "npm run eslint && npm run build && cross-env NODE_ENV=prod node dist/index.js",
+    "start:heroku": "npm run eslint && npm run build && cross-env NODE_ENV=production node dist/index.js",
     "build": "babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

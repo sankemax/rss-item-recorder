@@ -1,0 +1,4 @@
+{
+    "dbPath": "./blogs.db",
+    "portForApi": 3030
+}

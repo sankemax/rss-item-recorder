@@ -14,7 +14,7 @@ const { initDb } = require('./repository/core');
 const { initReader } = require('./rssReader');
 const readerRouter = require('./router/readerRouter');
 const { sigs } = require('./utils/operations');
-const port = config.get('portForApi');
+const port = process.env.PORT || config.get('portForApi');
 
 initDb(config.get('dbPath'));
 initReader();
@@ -22,7 +22,9 @@ initReader();
 express()
     .use(cors())
     .use(Sentry.Handlers.requestHandler())
+    .use('/public', express.static('public'))
 
+    .get('/favicon.ico', (_, res) => res.redirect('/public/favicon.ico'))
     .get('/', (req, res) => res.send('Rss Item Recorder is alive!'))
     .get('/debug-sentry', function mainHandler(req, res) {
         throw new Error('My first Sentry error!');
