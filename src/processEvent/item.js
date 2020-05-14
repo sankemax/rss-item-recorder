@@ -1,6 +1,6 @@
 const moment = require('moment');
 const R = require('ramda');
-const { dissociateAll, urlInfo, replaceLineBreaksWith, } = require('../utils/transform');
+const { dissociateAll, urlInfo, replaceLineBreaksWith, defaultCharsSwapper, } = require('../utils/transform');
 
 function processItemEvent(itemFeed) {
     const { item, metadata: { link, author, categories, meta } } = itemFeed;
@@ -10,7 +10,7 @@ function processItemEvent(itemFeed) {
         author,
         blogTitle: meta && meta.title || author,
         pubdate: moment(pubdate).format('YYYY-MM-DD HH:mm:ssZ'),
-        description: processDescription(description),
+        description: processDescription(defaultCharsSwapper(description)),
         categories,
         domain: resource,
         ...removeUnnecessaryFields(item),

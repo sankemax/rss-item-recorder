@@ -15,7 +15,28 @@ const notNull = any => any != null;
 const urlInfo = url => {
     const { protocol, resource } = parseUrl(url);
     return { protocol, resource };
-};
+}
+
+const defaultSwappers = [
+    { chars: /&#34;|&quot;/g, swapWith: '"' },
+    { chars: /&#8216;|&#8217;/g, swapWith: '\'' },
+    { chars: /&#8211;/g, swapWith: '-' },
+    { chars: /&#8230;/g, swapWith: '...' },
+    { chars: /&#160;/g, swapWith: ' ' },
+]
+
+function charsSwapper(swappers) {
+    return function withText(text) {
+        return swappers.reduce(
+            (resultText, swapper) => resultText.replace(swapper.chars, swapper.swapWith),
+            text
+        )
+    }
+}
+
+function defaultCharsSwapper(text) {
+    return charsSwapper(defaultSwappers)(text);
+}
 
 const replaceExpression = expression => withStr => str => str.replace(expression, withStr);
 
@@ -29,4 +50,5 @@ module.exports = {
     urlInfo,
     replaceExpression,
     replaceLineBreaksWith,
+    defaultCharsSwapper,
 }
