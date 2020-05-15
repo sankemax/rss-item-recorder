@@ -18,13 +18,15 @@ const urlInfo = url => {
 }
 
 const defaultSwappers = [
-    { chars: /&#34;|&quot;/g, swapWith: '"' },
-    { chars: /&#8216;|&#8217;/g, swapWith: '\'' },
-    { chars: /&#8211;/g, swapWith: '-' },
-    { chars: /&#8230;/g, swapWith: '...' },
-    { chars: /&#160;/g, swapWith: ' ' },
+    { chars: /&#34;|&quot;/g, swapWith: '\u0022' },
+    { chars: /&#8216;/g, swapWith: '\u2018' },
+    { chars: /&#8217;/g, swapWith: '\u2019' },
+    { chars: /&#8211;/g, swapWith: '\u2013' },
+    { chars: /&#8230;/g, swapWith: '\u2026' },
+    { chars: /&#160;/g, swapWith: '\u00A0' },
     { chars: /&#8592;/g, swapWith: '\u2190' },
     { chars: /&#8594;/g, swapWith: '\u2192' },
+    { chars: /&#039;/g, swapWith: '\u0027' },
 ]
 
 function charsSwapper(swappers) {
