@@ -31,7 +31,6 @@ function initTables() {
             .run(`
                 CREATE TABLE IF NOT EXISTS feeds (
                     id text PRIMARY KEY,
-                    title text,
                     blogTitle text,
                     author text,
                     linkToWebPage text,
