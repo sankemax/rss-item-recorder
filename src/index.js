@@ -6,7 +6,7 @@ const cors = require('cors');
 const Sentry = require('@sentry/node');
 
 Sentry.init({
-    dsn: 'https://057bdd5dc4484dfd837832e1e8a44b5e@o388622.ingest.sentry.io/5225736',
+    dsn: process.env.SENTRY_SECRET,
     environment: process.env.NODE_ENV || 'dev',
 });
 
