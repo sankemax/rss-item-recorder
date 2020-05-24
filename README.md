@@ -4,6 +4,8 @@ It's a web-app I wrote in collaboration with [Hanan Cohen](https://twitter.com/h
 
 I've written the [frontend](https://github.com/sankemax/blogim-react-ts) separately.
 
+Latest *experimental* deployment is always found [here](https://blogim-rss.herokuapp.com/).
+
 ## Internals
 To collect blog feeds, I use "davereader" which I configured to store as little information on the file system as possible. I emit the feeds with node events and write to sqlite3 DB.
 
