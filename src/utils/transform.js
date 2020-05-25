@@ -1,4 +1,5 @@
 const R = require('ramda');
+const moment = require('moment');
 const parseUrl = require('parse-url');
 
 const dissociateAll = (args, obj) => args.reduce(
@@ -49,11 +50,22 @@ function defaultCharsSwapper(text) {
     return charsSwapper(defaultSwappers)(text);
 }
 
+function atomDate(date) {
+    return moment(date).format('YYYY-MM-DDTHH:mm:ssZ');
+}
+
+function atomLinkRfc(link) {
+    const url = new URL(link);
+    return `${url.origin}/${url.pathname.toUpperCase()}${url.search}`;
+}
+
 const replaceExpression = expression => withStr => str => str.replace(expression, withStr);
 
 const replaceLineBreaksWith = replaceExpression(/\r?\n|\r|&nbsp;/g);
 
 module.exports = {
+    atomLinkRfc,
+    atomDate,
     dissociateAll,
     thennable,
     doNothing,

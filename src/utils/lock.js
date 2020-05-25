@@ -3,7 +3,7 @@ const { EventEmitter } = require('events');
 class Lock {
     constructor() {
         this.ee = new EventEmitter();
-        this.ee.setMaxListeners(100);
+        this.ee.setMaxListeners(200);
         this.locks = new Set();
     }
 

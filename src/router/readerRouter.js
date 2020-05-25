@@ -2,12 +2,24 @@ const express = require('express');
 const fs = require('fs');
 
 const { get } = require('../repository/select');
+const { atomize } = require('../atomFeed/atomize');
 
 module.exports = express
     .Router()
     .get('/items', readItemsHandler)
     .get('/feeds', readFeedsHandler)
     .get('/list', getListHandler)
+    .get('/atom', getAtomHandler)
+
+async function getAtomHandler(_, res, next) {
+    res.set('Content-Type', 'application/atom+xml; charset=UTF-8');
+    try {
+        const atomFeed = await atomize("20");
+        res.send(atomFeed);
+    } catch (err) {
+        next(err);
+    }
+}
 
 async function getListHandler(_, res, next) {
     fs.readFile('lists/people.txt', (err, data) => {
@@ -31,7 +43,7 @@ async function readHandler(table, options) {
     if (!options.limit) {
         throw new Error('Must limit results. Add `limit` request param to your query.');
     }
-    return await get(table, { ...options, where: {}, }, false);
+    return await get(table, { ...options, }, false);
 }
 
 // eslint-disable-next-line no-unused-vars

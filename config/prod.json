@@ -1,4 +1,5 @@
 {
     "dbPath": "/home/ubuntu/blogs.db",
-    "portForApi": 3030
+    "portForApi": 3030,
+    "siteDomain": "blogim.info"
 }

@@ -8,7 +8,10 @@ const {
 } = require('../utils/database');
 
 function get(tableName, selectOptions, single = true) {
-    const { columns, where: { param, value }, limit, offset, sortBy, } = selectOptions;
+    const { where: whereOptions } = selectOptions;
+    const param = whereOptions && whereOptions.param ? whereOptions.param : null;
+    const value = whereOptions && whereOptions.value ? whereOptions.value : null;
+    const { columns, limit, offset, sortBy, } = selectOptions;
     return new Promise((resolve, reject) => {
         const dbMethod = single ? 'get' : 'all';
         getDb()[dbMethod](

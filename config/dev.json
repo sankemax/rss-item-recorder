@@ -1,4 +1,5 @@
 {
     "dbPath": "./blogs.db",
-    "portForApi": 3000
+    "portForApi": 3000,
+    "siteDomain": "blogim.club"
 }
