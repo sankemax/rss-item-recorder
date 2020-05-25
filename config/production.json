@@ -1,5 +1,5 @@
 {
     "dbPath": "./blogs.db",
     "portForApi": 3030,
-    "siteDomain": "blogim.club"
+    "siteDomain": "blogim.work"
 }
