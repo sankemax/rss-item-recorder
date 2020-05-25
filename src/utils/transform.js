@@ -32,6 +32,8 @@ const defaultSwappers = [
     { chars: /&#x1f60a;/g, swapWith: '\uD83D\uDE0A' },
     { chars: /&amp;/g, swapWith: '\u0026' },
     { chars: /&#039;/g, swapWith: '\u0027' },
+    { chars: /&#124;/g, swapWith: '\u007C' },
+    { chars: /&#215;/g, swapWith: '\u00D7' },
 ]
 
 function charsSwapper(swappers) {
