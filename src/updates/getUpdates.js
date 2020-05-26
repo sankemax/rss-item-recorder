@@ -19,8 +19,7 @@ async function updateCache() {
         const feed = await rssParser.parseURL('https://www.webster.co.il/tag/blogim/feed');
         cache = { lastUpdated: new Date(), data: feed, };
     } catch (err) {
-        Sentry.captureException();
-        console.error(err);
+        Sentry.captureException(err);
     }
 }
 
