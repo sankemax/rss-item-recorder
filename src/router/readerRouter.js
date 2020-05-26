@@ -3,10 +3,12 @@ const fs = require('fs');
 
 const { get } = require('../repository/select');
 const { atomize } = require('../atomFeed/atomize');
+const { getUpdates } = require('../updates/getUpdates');
 
 module.exports = express
     .Router()
     .get('/items', readItemsHandler)
+    .get('/updates', readUpdatesHandler)
     .get('/feeds', readFeedsHandler)
     .get('/list', getListHandler)
     .get('/atom', getAtomHandler)
@@ -44,6 +46,20 @@ async function readHandler(table, options) {
         throw new Error('Must limit results. Add `limit` request param to your query.');
     }
     return await get(table, { ...options, }, false);
+}
+
+async function readUpdatesHandler(_, res, next) {
+    try {
+        const updateItems = await getUpdates();
+        res.json({
+            success: true,
+            data: {
+                updates: updateItems,
+            },
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
 // eslint-disable-next-line no-unused-vars

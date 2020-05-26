@@ -25,6 +25,7 @@
     "parse-url": "^5.0.1",
     "promise-queue": "^2.2.5",
     "ramda": "^0.26.1",
+    "rss-parser": "^3.8.0",
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {

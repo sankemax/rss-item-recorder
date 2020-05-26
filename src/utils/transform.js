@@ -18,6 +18,21 @@ const urlInfo = url => {
     return { protocol, resource };
 }
 
+function normalizeWebsterItem(rawItem) {
+    const { title, link, pubDate, guid, content, } = rawItem;
+    return {
+        id: guid,
+        title: defaultCharsSwapper(title),
+        link,
+        blogTitle: 'וובסטר',
+        author: 'חנן כהן',
+        pubdate: moment(pubDate).format('YYYY-MM-DD HH:mm:ssZ'),
+        description: defaultCharsSwapper(content),
+        domain: 'https://www.webster.co.il',
+        feedUrl: 'https://www.webster.co.il/tag/blogim/feed',
+    }
+}
+
 const defaultSwappers = [
     { chars: /&#34;|&quot;/g, swapWith: '\u0022' },
     { chars: /&#8216;/g, swapWith: '\u2018' },
@@ -35,6 +50,7 @@ const defaultSwappers = [
     { chars: /&#039;/g, swapWith: '\u0027' },
     { chars: /&#124;/g, swapWith: '\u007C' },
     { chars: /&#215;/g, swapWith: '\u00D7' },
+    { chars: /&#187;/g, swapWith: '\u00BB' },
 ]
 
 function charsSwapper(swappers) {
@@ -64,6 +80,7 @@ const replaceExpression = expression => withStr => str => str.replace(expression
 const replaceLineBreaksWith = replaceExpression(/\r?\n|\r|&nbsp;/g);
 
 module.exports = {
+    normalizeWebsterItem,
     atomLinkRfc,
     atomDate,
     dissociateAll,
