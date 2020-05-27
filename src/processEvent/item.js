@@ -3,9 +3,9 @@ const R = require('ramda');
 const { dissociateAll, urlInfo, replaceLineBreaksWith, defaultCharsSwapper, } = require('../utils/transform');
 
 function processItemEvent(itemFeed) {
-    const { item, metadata: { link, author, categories, meta } } = itemFeed;
+    const { item, metadata: { link, author, categories, meta, origlink, } } = itemFeed;
     const { description, pubdate, } = item;
-    const { resource } = urlInfo(link);
+    const { resource } = urlInfo(testForProxyLinks(link) ? origlink || link : link);
     const processedItem = {
         author,
         blogTitle: meta && meta.title || author,
@@ -16,6 +16,10 @@ function processItemEvent(itemFeed) {
         ...removeUnnecessaryFields(item),
     }
     return processedItem;
+}
+
+function testForProxyLinks(link) {
+    return /feedproxy.google.com/.test(link);
 }
 
 function removeUnnecessaryFields(item) {
