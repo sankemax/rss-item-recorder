@@ -9,7 +9,7 @@
     "start:dev": "npm run eslint && cross-env NODE_ENV=dev node --inspect src/index.js",
     "start:prod": "npm run eslint && npm run build && cross-env NODE_ENV=prod node dist/index.js",
     "start:heroku": "npm run eslint && npm run build && cross-env NODE_ENV=production node dist/index.js",
-    "build": "babel src -d dist",
+    "build": "npm i && babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sankemax",
