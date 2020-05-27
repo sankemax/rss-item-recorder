@@ -7,6 +7,21 @@ const {
     orderBy,
 } = require('../utils/database');
 
+async function count(tableName) {
+    return new Promise((resolve, reject) => {
+        getDb().get(
+            `select count(id) from ${tableName}`,
+            [],
+            (error, value) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(value['count(id)']);
+            }
+        );
+    });
+}
+
 function get(tableName, selectOptions, single = true) {
     const { where: whereOptions } = selectOptions;
     const param = whereOptions && whereOptions.param ? whereOptions.param : null;
@@ -41,4 +56,5 @@ function get(tableName, selectOptions, single = true) {
 
 module.exports = {
     get,
+    count,
 }

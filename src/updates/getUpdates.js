@@ -1,5 +1,4 @@
 const Parser = require('rss-parser');
-const Sentry = require('@sentry/node');
 
 const { normalizeWebsterItem } = require('../utils/transform');
 
@@ -15,12 +14,8 @@ async function getUpdates() {
 }
 
 async function updateCache() {
-    try {
-        const feed = await rssParser.parseURL('https://www.webster.co.il/tag/blogim/feed');
-        cache = { lastUpdated: new Date(), data: feed, };
-    } catch (err) {
-        Sentry.captureException(err);
-    }
+    const feed = await rssParser.parseURL('https://www.webster.co.il/tag/blogim/feed');
+    cache = { lastUpdated: new Date(), data: feed, };
 }
 
 module.exports = {
