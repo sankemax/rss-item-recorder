@@ -1,6 +1,8 @@
 # Rss Item Recorder
 It's a web-app I wrote in collaboration with [Hanan Cohen](https://twitter.com/hananc) who requested me to re-create the site after the previous iteration - Blogim.info - was struggling to survive.
 
+The code is based on [river5](https://github.com/scripting/river5) by [Dave Winer](http://scripting.com/).
+
 
 I've written the [frontend](https://github.com/sankemax/blogim-react-ts) separately.
 
