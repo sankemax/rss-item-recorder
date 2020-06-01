@@ -6,6 +6,8 @@ const { atomize } = require('../atomFeed/atomize');
 const { getUpdates } = require('../updates/getUpdates');
 const tryCatch = require('../utils/flowControl')
 
+const readHandlerTryCatch = tryCatch(readHandler);
+
 module.exports = express
     .Router()
     .get('/metadata', metadataHandler)
@@ -59,18 +61,14 @@ async function getListHandler(_, res, next) {
     });
 }
 
-async function readHandler(table, options, next) {
+async function readHandler(table, options) {
     if (!options.limit) {
         throw new Error('Must limit results. Add `limit` request param to your query.');
+    } else if (options.limit > 100) {
+        throw new Error(`Limit should not be higher than 100. Limit is: ${options.limit}`);
     }
 
-    const { error, ans } = await tryCatch(get)(table, { ...options, }, false);
-
-    if (error) {
-        return next(error);
-    }
-
-    return ans;
+    return await get(table, { ...options, }, false);
 }
 
 async function readUpdatesHandler(_, res, next) {
@@ -89,7 +87,11 @@ async function readUpdatesHandler(_, res, next) {
 }
 
 async function readItemsHandler(req, res, next) {
-    const items = await readHandler('items', { ...extractOptions(req), sortBy: 'pubdate' }, next);
+    const { error, ans: items } = await readHandlerTryCatch('items', { ...extractOptions(req), sortBy: 'pubdate' });
+
+    if (error) {
+        return next(error);
+    }
 
     return res.json({
         success: true,
@@ -100,7 +102,11 @@ async function readItemsHandler(req, res, next) {
 }
 
 async function readFeedsHandler(req, res, next) {
-    const feeds = await readHandler('feeds', { ...extractOptions(req), sortBy: 'lastPostDate' }, next);
+    const { error, ans: feeds } = await readHandlerTryCatch('feeds', { ...extractOptions(req), sortBy: 'lastPostDate' });
+
+    if (error) {
+        return next(error);
+    }
 
     return res.json({
         success: true,
@@ -114,6 +120,6 @@ function extractOptions(req) {
     const { limit, offset, } = req.query;
     return {
         limit,
-        offset: offset || "0",
+        offset: offset || '0',
     }
 }
