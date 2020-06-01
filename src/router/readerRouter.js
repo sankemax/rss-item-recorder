@@ -16,10 +16,10 @@ module.exports = express
     .get('/atom', getAtomHandler)
 
 async function metadataHandler(_, res, next) {
-    const { error, ans: numOfFeeds, } = await tryCatch(count, next)('feeds');
+    const { error, ans: numOfFeeds, } = await tryCatch(count)('feeds');
 
     if (error) {
-        return;
+        return next(error);
     }
 
     res.json({
