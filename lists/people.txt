@@ -260,7 +260,7 @@ https://lulisml.wordpress.com/feed/
 https://datascienceandhiphop.wordpress.com/feed/
 http://www.didyoulearnanything.net/azma/feed/
 https://galperel.wordpress.com/feed/
-https://lbscience.org/
+https://lbscience.org/feed/
 https://ireadjapan.wordpress.com/feed/
 https://www.skipperit.com/feed/
 https://netunim.wordpress.com/feed/
