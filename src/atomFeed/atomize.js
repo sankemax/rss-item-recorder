@@ -17,10 +17,10 @@ async function atomize(limit) {
 }
 
 function atomizeItem(item) {
-    const { title, link, author, description, pubdate, } = item;
+    const { title, link, author, description, pubdate, blogTitle, } = item;
     return `
         <entry>
-            <title type="html">${title || "Untitled"}</title>
+            <title type="html">${blogTitle || "ללא שם"} | ${title || "ללא כותרת"}</title>
             <id>${atomLinkRfc(link)}</id>
             <link rel="alternate" href="${atomLinkRfc(link)}" />
             <published>${atomDate(pubdate)}</published>
