@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^5.15.5",
-    "config": "^3.2.5",
+    "config": "^3.3.8",
     "cors": "^2.8.5",
     "davereader": "^0.6.10",
     "dotenv": "^8.2.0",
